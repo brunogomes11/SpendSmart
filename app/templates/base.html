@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Expenses Tracker</title>
+    </head>
+    <body>
+        <h1>Expenses Tracker</h1>
+        <a href="/">Home Page</a>
+        {% if session.name %}
+        <h3>Logged in as {{ session.name }}</h3>
+        <a href="/logout">Logout</a>
+        {% endif %} {% block main %} {% endblock%}
+    </body>
+</html>

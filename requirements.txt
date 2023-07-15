@@ -1,0 +1,6 @@
+Flask
+Gunicorn
+psycopg2
+SQLALCHEMY
+Flask-SQLAlchemy
+WTForms
