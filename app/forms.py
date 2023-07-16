@@ -9,7 +9,7 @@ from wtforms import (
     EmailField,
     PasswordField,
 )
-from wtforms.fields import EmailField, DateField
+from wtforms.fields import EmailField, DateField, DecimalField
 from wtforms.validators import (
     DataRequired,
     Length,
@@ -44,3 +44,48 @@ class Login(FlaskForm):
         ],
     )
     submit = SubmitField("Log In")
+
+
+category_type = [
+    "Expenses",
+    "Eating out",
+    "Transport",
+    "Fun",
+    "Pet",
+    "Photo",
+    "Gift",
+    "Miscellaneous",
+]
+
+
+class AddExpense(FlaskForm):
+    expense_id = HiddenField("id")
+    date = DateField(
+        "Purchase Date",
+        format="%Y-%m-%d",
+        validators=[DataRequired()],
+        render_kw={"placeholder": "DD/MM/YYYY"},
+    )
+    payee = StringField(
+        "Payee",
+        validators=[DataRequired()],
+        render_kw={"placeholder": "Enter payee name"},
+    )
+    category = SelectField("Category", choices=[(typ, typ) for typ in category_type])
+    description = StringField(
+        "Description",
+        validators=[DataRequired()],
+        render_kw={"placeholder": "Enter expense description"},
+    )
+    amount = DecimalField(
+        "Amount (A$)",
+        validators=[
+            DataRequired(message="Invalid amount. Please, introduce a positive number")
+        ],
+        render_kw={"placeholder": "Enter expense amount"},
+    )
+    add = SubmitField("Add new expense")
+
+    def validate_amount(self, amount):
+        if amount.data <= 0:
+            raise ValidationError("Invalid amount. Please, introduce a positive number")

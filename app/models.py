@@ -8,6 +8,7 @@ class Users(db.Model):
     name = db.Column(db.String)
     admin = db.Column(db.Boolean, default=False)
     password_hash = db.Column(db.String, nullable=False)
+    expenses = db.relationship("Expenses", backref="users")
 
 
 class Expenses(db.Model):
@@ -17,3 +18,4 @@ class Expenses(db.Model):
     category = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
     amount = db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)

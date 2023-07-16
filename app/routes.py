@@ -1,9 +1,8 @@
 from app import app, db
-from flask import render_template, request, url_for, redirect, session, flash
+from flask import render_template, request, redirect, session, flash
 from app.models import Users, Expenses
-from app.forms import Signup, Login
+from app.forms import Signup, Login, AddExpense
 from datetime import date
-import os
 import bcrypt
 
 # Flash message
@@ -66,9 +65,9 @@ def login():
                 session["id"] = user_id
                 session["name"] = name
                 session["admin"] = admin
-                return redirect("/")
+                return redirect("/expenses")
         flash("Email address or password is incorrect. Please try again.", "error")
-        return redirect("/login")
+        return redirect("/login")  ## DISPLAY EXPENSES
     else:
         return render_template("login.html", form=form)
 
@@ -78,3 +77,54 @@ def login():
 def logout():
     session.clear()
     return redirect("/")
+
+
+## SHOW EXPENSES ##
+@app.route("/expenses")
+def show_expenses():
+    user_id = session.get("id")
+    user_expenses = (
+        db.session.query(Expenses).join(Users).filter(Users.id == user_id).all()
+    )
+
+    if user_expenses == []:
+        return render_template("expenses.html", user_id=user_id)
+    else:
+        query = Expenses.query.filter(Expenses.user_id == user_id).all()
+
+        total_amount = 0
+        for data in query:
+            data.amount
+            total_amount += data.amount
+        total_amount = round(total_amount, 2)
+
+        return render_template(
+            "expenses.html", expenses=user_expenses, total=total_amount
+        )
+
+
+## ADD EXPENSES ##
+@app.route("/add_expense", methods=["GET", "POST"])
+def add_expense():
+    user_id = session.get("id")
+
+    form = AddExpense(request.form)
+
+    # POST
+    if form.validate_on_submit():
+        new_expense = Expenses(
+            date=request.values.get("date"),
+            payee=request.values.get("payee"),
+            category=request.values.get("category"),
+            description=request.values.get("description"),
+            amount=request.values.get("amount"),
+            user_id=user_id,
+        )
+
+        db.session.add(new_expense)
+        db.session.commit()
+
+        return redirect("/expenses")
+    else:
+        ## GET ##
+        return render_template("add_expense.html", form=form)

@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block main %} {% if expenses %}
+<h1>Hey {{session.name}}, these are your expenses:</h1>
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Payee</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Action</th>
+    </tr>
+    {% for expense in expenses %}
+    <tr>
+        <td>{{ expense.date }}</td>
+        <td>{{ expense.payee }}</td>
+        <td>{{ expense.category }}</td>
+        <td>{{ expense.description }}</td>
+        <td>{{ expense.amount }}</td>
+        <td>
+            <a href="/edit_expense?id={{expense.expense_id}}">Edit/Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+
+    <p>Total Amount (A$): {{total}}</p>
+</table>
+
+{% else %}
+<p>{{session.name}}, would you like to start adding expenses?</p>
+<a href="/add_expense">Add Expenses</a>
+{% endif %} {% endblock%}
