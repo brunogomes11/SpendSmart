@@ -2,11 +2,11 @@ from app import app, db
 from flask import render_template, request, url_for, redirect, session
 from app.models import Users, Expenses
 
-# from app.forms AddUser, AddExpense, EditExpense
+from app.forms import Signup
 from datetime import date
 import os
 
-# import bcrypt
+import bcrypt
 
 
 @app.route("/")
@@ -26,17 +26,22 @@ def login():
 #     password = request.form.get("password")
 
 
-@app.route("/signup")
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
-    return render_template("signup.html")
+    form = Signup(request.form)
 
+    if form.validate_on_submit():
+        form_password = request.values.get("password")
+        pw_hash = bcrypt.hashpw(form_password.encode(), bcrypt.gensalt()).decode()
+        user = Users(
+            email=request.values.get("email"),
+            name=request.values.get("name"),
+            password_hash=pw_hash,
+        )
+        db.session.add(user)
+        db.session.commit()
+        return redirect("/login")
 
-@app.route("/signup", methods=["POST"])
-def signup_action():
-    # pw_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-
-    ##push to the database
-    ##STILL NEED TO CREATE
-    # user.signup(name=name, email=email, pw_hash=pw_hash)
-
-    return redirect("/login")
+    else:
+        print(form.errors)
+        return render_template("signup.html", form=form)

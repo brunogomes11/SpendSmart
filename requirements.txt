@@ -4,3 +4,6 @@ psycopg2
 SQLALCHEMY
 Flask-SQLAlchemy
 WTForms
+flask_wtf
+wtforms.fields
+bcrypt

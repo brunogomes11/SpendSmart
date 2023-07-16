@@ -6,7 +6,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True, nullable=False)
     name = db.Column(db.String)
-    admin = db.Column(db.Boolean)
+    admin = db.Column(db.Boolean, default=False)
     password_hash = db.Column(db.String, nullable=False)
 
 
