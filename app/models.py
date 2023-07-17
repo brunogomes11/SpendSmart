@@ -1,5 +1,6 @@
 from app import db
-import datetime
+
+from sqlalchemy import Date
 
 
 class Users(db.Model):
@@ -13,7 +14,7 @@ class Users(db.Model):
 
 class Expenses(db.Model):
     expense_id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    date = db.Column(db.String, nullable=False)
+    date = db.Column(Date, nullable=False)
     payee = db.Column(db.String, nullable=False)
     category = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)

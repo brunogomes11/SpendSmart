@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, request, redirect, session, flash
 from app.models import Users, Expenses
-from app.forms import Signup, Login, AddExpense
+from app.forms import Signup, Login, AddExpense, EditExpense
 from datetime import date
 import bcrypt
 
@@ -108,16 +108,16 @@ def show_expenses():
 def add_expense():
     user_id = session.get("id")
 
-    form = AddExpense(request.form)
+    form = AddExpense()
 
     # POST
     if form.validate_on_submit():
         new_expense = Expenses(
-            date=request.values.get("date"),
-            payee=request.values.get("payee"),
-            category=request.values.get("category"),
-            description=request.values.get("description"),
-            amount=request.values.get("amount"),
+            date=form.date.data,
+            payee=form.payee.data,
+            category=form.category.data,
+            description=form.description.data,
+            amount=form.amount.data,
             user_id=user_id,
         )
 
@@ -128,3 +128,35 @@ def add_expense():
     else:
         ## GET ##
         return render_template("add_expense.html", form=form)
+
+
+## EDIT ##
+@app.route("/edit_expense/<int:expense_id>", methods=["GET", "POST"])
+def edit_expense(expense_id):
+    # user_id = session.get("id")
+
+    expense = (
+        db.session.query(Expenses).filter(Expenses.expense_id == expense_id).first()
+    )
+
+    ## Display the form with populate fields
+    if expense:
+        form = EditExpense(
+            obj=expense
+        )  ## This is really great, it automatically populate the form with the database obj
+
+        if form.validate_on_submit():
+            if form.save.data:
+                form.populate_obj(expense)
+                db.session.commit()
+                return redirect("/expenses")
+            elif form.delete.data:
+                db.session.delete(expense)
+                db.session.commit()
+                return redirect("/expenses")
+        return render_template("edit_expense.html", form=form, expense_id=expense_id)
+
+
+# @app.route("/edit_expense")
+# def edit_expense_get():
+#     return render_template("expense.html")

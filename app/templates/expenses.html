@@ -18,13 +18,15 @@
         <td>{{ expense.description }}</td>
         <td>{{ expense.amount }}</td>
         <td>
-            <a href="/edit_expense?id={{expense.expense_id}}">Edit/Delete</a>
+            <a href="/edit_expense/{{expense.expense_id}}">Edit/Delete</a>
         </td>
     </tr>
     {% endfor %}
 
     <p>Total Amount (A$): {{total}}</p>
 </table>
+
+<a href="/add_expense">Add expense</a>
 
 {% else %}
 <p>{{session.name}}, would you like to start adding expenses?</p>

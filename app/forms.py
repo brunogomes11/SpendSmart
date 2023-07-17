@@ -61,7 +61,7 @@ category_type = [
 class AddExpense(FlaskForm):
     expense_id = HiddenField("id")
     date = DateField(
-        "Purchase Date",
+        "Date",
         format="%Y-%m-%d",
         validators=[DataRequired()],
         render_kw={"placeholder": "DD/MM/YYYY"},
@@ -85,6 +85,36 @@ class AddExpense(FlaskForm):
         render_kw={"placeholder": "Enter expense amount"},
     )
     add = SubmitField("Add new expense")
+
+    def validate_amount(self, amount):
+        if amount.data <= 0:
+            raise ValidationError("Invalid amount. Please, introduce a positive number")
+
+
+class EditExpense(FlaskForm):
+    expense_id = HiddenField("id")
+    date = DateField(
+        "Date",
+        format="%Y-%m-%d",
+        validators=[DataRequired()],
+    )
+    payee = StringField(
+        "Payee",
+        validators=[DataRequired()],
+    )
+    category = SelectField("Category", choices=[(typ, typ) for typ in category_type])
+    description = StringField(
+        "Description",
+        validators=[DataRequired()],
+    )
+    amount = DecimalField(
+        "Amount (A$)",
+        validators=[
+            DataRequired(message="Invalid amount. Please, introduce a positive number")
+        ],
+    )
+    save = SubmitField("Save Changes")
+    delete = SubmitField("Delete Expense")
 
     def validate_amount(self, amount):
         if amount.data <= 0:
