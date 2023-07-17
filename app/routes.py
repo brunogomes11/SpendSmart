@@ -4,6 +4,9 @@ from app.models import Users, Expenses
 from app.forms import Signup, Login, AddExpense, EditExpense
 from datetime import date
 import bcrypt
+from sqlalchemy.sql import func
+from sqlalchemy import text
+
 
 # Flash message
 app.secret_key = "hello123"
@@ -157,6 +160,79 @@ def edit_expense(expense_id):
         return render_template("edit_expense.html", form=form, expense_id=expense_id)
 
 
-# @app.route("/edit_expense")
-# def edit_expense_get():
-#     return render_template("expense.html")
+@app.route("/dashboard")
+def dashboard():
+    user_id = session.get("id")
+
+    ## SETUP GRAPH FOR INCOME/EXPENSES
+
+    # Get only the category INCOME and the total amount of incomes
+    income = (
+        db.session.query(Expenses.category, func.sum(Expenses.amount).label("total"))
+        .filter(Expenses.user_id == user_id)
+        .filter(Expenses.category == "Income")
+        .group_by(Expenses.category)
+        .all()
+    )
+
+    # Get all the categories excluding Income and sum all the amount
+    expenses = (
+        db.session.query(func.sum(Expenses.amount).label("total"))
+        .filter(Expenses.user_id == user_id)
+        .filter(Expenses.category != "Income")
+        .all()
+    )
+
+    income_values = [row[1] for row in income]  ##TOTAL INCOME
+    print(income_values)
+
+    expense_values = [row[0] for row in expenses]  ##TOTAL EXPENSES
+    print(expense_values)
+
+    ##SPEND BY DATE
+    dates = (
+        db.session.query(func.sum(Expenses.amount), Expenses.date)
+        .filter(Expenses.category != "Income")
+        .group_by(Expenses.date)
+        .order_by(Expenses.date)
+        .all()
+    )
+
+    amount_by_date = []
+    date_label = []
+    for amount, date in dates:
+        amount_by_date.append(amount)
+        date_label.append(date.strftime("%d-%m-%Y"))
+    print(amount_by_date)
+    print(date_label)
+
+    ##DISPLAY TOTAL BY CATEGORY
+
+    results = (
+        db.session.query(Expenses.category, func.sum(Expenses.amount).label("total"))
+        .filter(Expenses.user_id == user_id)
+        .group_by(Expenses.category)
+        .order_by(func.sum(Expenses.amount).desc())
+        .all()
+    )
+    return render_template(
+        "dashboard.html",
+        results=results,
+        income_values=income_values,
+        expense_values=expense_values,
+        amount_by_date=amount_by_date,
+        date_label=date_label,
+    )
+
+
+@app.route("/category/<category>")
+def category(category):
+    user_id = session.get("id")
+    results = (
+        db.session.query(Expenses.date, Expenses.payee, Expenses.amount)
+        .filter(Expenses.user_id == user_id)
+        .filter(Expenses.category == category)
+        .all()
+    )
+
+    return render_template("category.html", results=results)

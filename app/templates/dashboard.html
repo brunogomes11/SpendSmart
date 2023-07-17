@@ -1,0 +1,150 @@
+{% extends 'base.html' %} {% block main %}
+
+<h1>Dashboard</h1>
+
+<div class="col-xs-10, col-sm-6">
+    <div class="card card-style mb-2">
+        <div class="card-body">
+            <div class="chart-container" style="position: relative">
+                <canvas id="income_vs_expense"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-10, col-sm-6">
+    <div class="card card-style mb-2">
+        <div class="card-body">
+            <div class="chart-container" style="position: relative">
+                <canvas id="expenses_by_date"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-10 col-sm-6 col-md-6">
+    <div class="card card-style mb-2">
+        <div class="card-body">
+            <div class="chart-container" style="position: relative">
+                <canvas id="income_vs_category"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block javascript %}
+<script>
+    Chart.scaleService.updateScaleDefaults("linear", {
+        ticks: {
+            min: 0,
+        },
+    }); /*TO BE ABLE TO SCALE THE GRAPHS */
+
+    <!-- INCOME VS EXPENSES GRAPH -->
+    let income_vs_expense_chart = new Chart(income_vs_expense, {
+        type: 'pie',
+        data: {
+        labels: ['income', 'expenses'],
+            datasets: [{
+                label: "Income Vs Expenses",
+                data: [{{income_values | safe}}, {{expense_values | safe}}],
+                backgroundColor: ['#5DA5DA ', '#FAA43A', '#60BD68',
+                    '#B276B2', '#E16851', '#FB8267'],
+
+                borderWidth: 1,
+                hoverBorderColor: "black",
+                hoverBorderWidth: 2,
+                hoverBackgroundColor: 'rgba(154, 245, 140)',
+                pointHoverRadius: 5
+            }],
+        },
+        options: {
+                title: {
+                    display: true,
+                        text: "Income Vs Expenses",
+                            fontSize: 20,
+                },
+                legend: {
+                    position: "right",
+                        labels: {
+                        fontColor: "gray"
+                    },
+                    display: true,
+                },
+
+                elements: {
+                    hitRadius: 3,
+                }
+        }
+    })
+
+
+
+
+    new Chart(document.getElementById("expenses_by_date"), {
+        type: "line",
+        data:
+        {
+            labels: {{date_label | tojson | safe}},
+            datasets: [{
+                label: "Expenditure Over Time",
+
+                data: {{ amount_by_date | safe }},
+                fill: false,
+                borderColor: "rgb(75, 192, 192)",
+                lineTension: 0.1
+            }]
+        },
+        options: {}
+    });
+
+    let income_vs_category_chart = new Chart(income_vs_category, {
+        type: 'bar',
+        data: {
+            labels: ['investment', 'rent', 'salary', 'side_hustle'],
+            datasets: [{
+                label: "Categories Of Income",
+                data: income_category_data,
+        backgroundColor: ['#5DA5DA ', '#FAA43A', '#60BD68',
+            '#B276B2', '#E16851', '#FB8267'],
+        borderWidth: 1,
+        hoverBorderColor: "black",
+        hoverBorderWidth: 2,
+        hoverBackgroundColor: 'rgba(154, 245, 140)',
+        pointHoverRadius: 5
+    }],
+        },
+    options: {
+            title: {
+                display: true,
+                    text: "Income Categories",
+                        fontSize: 20,
+        },
+            legend: {
+                position: "right",
+                    labels: {
+                    fontColor: "gray"
+                },
+                display: true,
+        },
+
+            elements: {
+                hitRadius: 3,
+        }
+        }
+    })
+</script>
+{% endblock %}
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Total</th>
+    </tr>
+    {% for category, total in results %}
+    <tr>
+        <td><a href="/category/{{category}}">{{ category }}</a></td>
+        <td>A${{ total }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock%}

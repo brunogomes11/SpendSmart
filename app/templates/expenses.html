@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block main %} {% if expenses %}
 <h1>Hey {{session.name}}, these are your expenses:</h1>
-
+<a href="/dashboard">Dashboard</a>
 <table>
     <tr>
         <th>Date</th>
@@ -16,7 +16,7 @@
         <td>{{ expense.payee }}</td>
         <td>{{ expense.category }}</td>
         <td>{{ expense.description }}</td>
-        <td>{{ expense.amount }}</td>
+        <td>A${{ expense.amount }}</td>
         <td>
             <a href="/edit_expense/{{expense.expense_id}}">Edit/Delete</a>
         </td>

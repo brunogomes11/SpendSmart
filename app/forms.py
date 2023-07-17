@@ -48,6 +48,7 @@ class Login(FlaskForm):
 
 category_type = [
     "Expenses",
+    "Income",
     "Eating out",
     "Transport",
     "Fun",

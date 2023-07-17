@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block main %}
+
+<h1>{{category}}</h1>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Payee</th>
+        <th>Total</th>
+    </tr>
+    {% for date, payee, amount in results %}
+    <tr>
+        <td>{{date}}</td>
+        <td>{{payee}}</td>
+        <td>A${{ amount }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock%}
