@@ -28,3 +28,7 @@ WHERE user_id = 2
   AND category != 'Income';
 
 
+SELECT SUM(amount) AS total_sum, category
+FROM expenses
+GROUP BY category
+ORDER BY category;

@@ -1,5 +1,18 @@
 {% extends 'base.html' %} {% block main %}
 
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Total</th>
+    </tr>
+    {% for category, total in results %}
+    <tr>
+        <td><a href="/category/{{category}}">{{ category }}</a></td>
+        <td>A${{ total }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 <h1>Dashboard</h1>
 
 <div class="col-xs-10, col-sm-6">
@@ -101,10 +114,10 @@
     let income_vs_category_chart = new Chart(income_vs_category, {
         type: 'bar',
         data: {
-            labels: ['investment', 'rent', 'salary', 'side_hustle'],
+            labels: {{category_names | safe}},
             datasets: [{
                 label: "Categories Of Income",
-                data: income_category_data,
+                data: {{category_amount | safe}},
         backgroundColor: ['#5DA5DA ', '#FAA43A', '#60BD68',
             '#B276B2', '#E16851', '#FB8267'],
         borderWidth: 1,
@@ -134,17 +147,4 @@
         }
     })
 </script>
-{% endblock %}
-<table>
-    <tr>
-        <th>Category</th>
-        <th>Total</th>
-    </tr>
-    {% for category, total in results %}
-    <tr>
-        <td><a href="/category/{{category}}">{{ category }}</a></td>
-        <td>A${{ total }}</td>
-    </tr>
-    {% endfor %}
-</table>
-{% endblock%}
+{% endblock %} {% endblock%}

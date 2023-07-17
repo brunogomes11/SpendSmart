@@ -2,7 +2,7 @@ from app import app, db
 from flask import render_template, request, redirect, session, flash
 from app.models import Users, Expenses
 from app.forms import Signup, Login, AddExpense, EditExpense
-from datetime import date
+from datetime import datetime, timedelta
 import bcrypt
 from sqlalchemy.sql import func
 from sqlalchemy import text
@@ -93,16 +93,36 @@ def show_expenses():
     if user_expenses == []:
         return render_template("expenses.html", user_id=user_id)
     else:
-        query = Expenses.query.filter(Expenses.user_id == user_id).all()
+        expenses = (
+            db.session.query(Expenses)
+            .filter(Expenses.user_id == user_id, Expenses.category != "Income")
+            .all()
+        )
 
-        total_amount = 0
-        for data in query:
-            data.amount
-            total_amount += data.amount
-        total_amount = round(total_amount, 2)
+        income = (
+            db.session.query(Expenses)
+            .filter(Expenses.user_id == user_id, Expenses.category == "Income")
+            .all()
+        )
+
+        total_expense = 0
+        for data in expenses:
+            total_expense += data.amount
+        total_expense = round(total_expense, 2)
+
+        total_income = 0
+        for data in income:
+            total_income += data.amount
+        total_income = round(total_income, 2)
+
+        net_balance = total_income - total_expense
 
         return render_template(
-            "expenses.html", expenses=user_expenses, total=total_amount
+            "expenses.html",
+            expenses=user_expenses,
+            total_expense=total_expense,
+            total_income=total_income,
+            net_balance=net_balance,
         )
 
 
@@ -206,6 +226,24 @@ def dashboard():
     print(amount_by_date)
     print(date_label)
 
+    ##INCOME VS CATEGORY
+
+    category_comparison = (
+        db.session.query(func.sum(Expenses.amount), Expenses.category)
+        .filter(Expenses.category != "Income")
+        .group_by(Expenses.category)
+        .order_by(Expenses.category)
+        .all()
+    )
+
+    category_amount = []
+    category_names = []
+    for amount, name in category_comparison:
+        category_amount.append(amount)
+        category_names.append(name)
+
+    print(category_amount)
+    print(category_names)
     ##DISPLAY TOTAL BY CATEGORY
 
     results = (
@@ -222,6 +260,8 @@ def dashboard():
         expense_values=expense_values,
         amount_by_date=amount_by_date,
         date_label=date_label,
+        category_amount=category_amount,
+        category_names=category_names,
     )
 
 
@@ -236,3 +276,53 @@ def category(category):
     )
 
     return render_template("category.html", results=results)
+
+
+@app.route("/weekly")
+def weekly():
+    user_id = session.get("id")
+    today = datetime.today().date()
+    end_date = today
+    start_date = end_date - timedelta(days=7)
+
+    results = (
+        db.session.query(Expenses.date, Expenses.payee, Expenses.amount)
+        .filter(Expenses.date >= start_date)
+        .filter(Expenses.user_id == user_id)
+        .order_by(Expenses.date.asc())
+        .all()
+    )
+
+    results_expenses = (
+        db.session.query(Expenses.date, Expenses.payee, Expenses.amount)
+        .filter(Expenses.date >= start_date)
+        .filter(Expenses.user_id == user_id)
+        .order_by(Expenses.date.asc())
+        .filter(Expenses.category != "Income")
+        .all()
+    )
+
+    results_income = (
+        db.session.query(Expenses.date, Expenses.payee, Expenses.amount)
+        .filter(Expenses.date >= start_date)
+        .filter(Expenses.user_id == user_id)
+        .order_by(Expenses.date.asc())
+        .filter(Expenses.category == "Income")
+        .all()
+    )
+
+    total_income = 0
+    for data in results_income:
+        data.amount
+        total_income += data.amount
+    total_income = round(total_income, 2)
+
+    total_expense = 0
+    for data in results_expenses:
+        data.amount
+        total_expense += data.amount
+    total_expense = round(total_expense, 2)
+
+    total = total_income - total_expense
+
+    return render_template("weekly.html", results=results, total=total)
