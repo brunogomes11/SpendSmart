@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, request, redirect, session, flash
 from app.models import Users, Expenses
-from app.forms import Signup, Login, AddExpense, EditExpense
+from app.forms import Signup, Login, AddExpense, EditExpense, DateRange
 from datetime import datetime, timedelta
 import bcrypt
 from sqlalchemy.sql import func
@@ -21,7 +21,7 @@ def index():
 ## SIGNUP ##
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    form = Signup(request.form)  ## Signup class from WTForms passing the
+    form = Signup()  ## Signup class from WTForms passing the
 
     ## POST ##
     if form.validate_on_submit():
@@ -47,7 +47,7 @@ def signup():
 ## LOGIN ##
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    form = Login(request.form)
+    form = Login()
 
     if request.method == "POST":
         result = Users.query.all()
@@ -326,3 +326,26 @@ def weekly():
     total = total_income - total_expense
 
     return render_template("weekly.html", results=results, total=total)
+
+
+@app.route("/sort", methods=["GET", "POST"])
+def sort_by_date():
+    user_id = session.get("id")
+    form = DateRange()
+
+    if form.validate_on_submit():
+        start_date = request.form.get("start_date")  # 2023-07-11
+        end_date = request.form.get("end_date")  # 2023-07-17
+
+        results = (
+            db.session.query(
+                Expenses.date, Expenses.payee, Expenses.description, Expenses.amount
+            )
+            .filter(Expenses.date.between(start_date, end_date))
+            .filter(Expenses.user_id == user_id)
+            .all()
+        )
+        print(results)
+        return render_template("sort.html", results=results)
+    else:
+        return render_template("sort.html", form=form)

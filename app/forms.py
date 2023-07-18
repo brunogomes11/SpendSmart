@@ -120,3 +120,13 @@ class EditExpense(FlaskForm):
     def validate_amount(self, amount):
         if amount.data <= 0:
             raise ValidationError("Invalid amount. Please, introduce a positive number")
+
+
+class DateRange(FlaskForm):
+    start_date = DateField("Start Date", format="%Y-%m-%d")
+    end_date = DateField("End Date", format="%Y-%m-%d")
+    submit = SubmitField("Search")
+
+    def validate_end_date(form, field):
+        if field.data < form.start_date.data:
+            raise ValidationError("End date must not be earlier than start date.")
