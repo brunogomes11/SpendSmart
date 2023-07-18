@@ -9,10 +9,11 @@
         <th>Description</th>
         <th>Total</th>
     </tr>
-    {% for date, payee, description, amount in results %}
+    {% for date, payee, category, description, amount in results %}
     <tr>
         <td>{{date}}</td>
         <td>{{payee}}</td>
+        <td>{{category}}</td>
         <td>{{description}}</td>
         <td>A${{ amount }}</td>
     </tr>

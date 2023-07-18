@@ -1,9 +1,10 @@
 {% extends 'base.html' %} {% block main %}
 <h1>Main page</h1>
+{% if session.name %}
 <a href="/expenses">Expenses</a>
 <a href="/dashboard">Dashboard</a>
 <a href="/weekly">Weekly</a>
-<a href="/category">Category</a> NEEDS A category name {% if not session.name %}
+<a href="/category">Category</a> NEEDS A category name {% else %}
 <a href="/signup">Sign up</a>
 <a href="/login">Login</a>
 

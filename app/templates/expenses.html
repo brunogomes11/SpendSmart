@@ -1,6 +1,31 @@
-{% extends 'base.html' %} {% block main %} {% if expenses %}
+{% extends 'base.html' %} {% block main %}{% if expenses %}
 <h1>Hey {{session.name}}, these are your expenses:</h1>
 <a href="/dashboard">Dashboard</a>
+<a href="/weekly">Past 7 days expenses</a>
+<form action="/expenses" method="POST">
+    {{form.csrf_token}} {{ form.hidden_tag() }}
+
+    <p>{{ form.start_date.label}} {{ form.start_date }}</p>
+
+    {% if form.start_date.errors %}
+    <ul class="errors">
+        {% for error in form.start_date.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <p>{{ form.end_date.label}} {{ form.end_date }}</p>
+
+    {% if form.end_date.errors %}
+    <ul class="errors">
+        {% for error in form.end_date.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} {{ form.submit }}
+</form>
+
 <table>
     <tr>
         <th>Date</th>
@@ -14,7 +39,7 @@
     <tr>
         <td>{{ expense.date }}</td>
         <td>{{ expense.payee }}</td>
-        <td>{{ expense.category }}</td>
+        <td>{{ expense.category.replace("_", " ") }}</td>
         <td>{{ expense.description }}</td>
         <td>A${{ expense.amount }}</td>
         <td>
@@ -29,7 +54,29 @@
 
 <a href="/add_expense">Add expense</a>
 
+{% elif results %}
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Payee</th>
+        <th>Description</th>
+        <th>Total</th>
+    </tr>
+    {% for date, payee, category, description, amount in results %}
+    <tr>
+        <td>{{date}}</td>
+        <td>{{payee}}</td>
+        <td>{{category}}</td>
+        <td>{{description}}</td>
+        <td>A${{ amount }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 {% else %}
+
 <p>{{session.name}}, would you like to start adding expenses?</p>
 <a href="/add_expense">Add Expenses</a>
+
 {% endif %} {% endblock%}

@@ -46,16 +46,16 @@ class Login(FlaskForm):
     submit = SubmitField("Log In")
 
 
-category_type = [
-    "Expenses",
-    "Income",
-    "Eating out",
-    "Transport",
-    "Fun",
-    "Pet",
-    "Photo",
-    "Gift",
-    "Miscellaneous",
+category_types = [
+    ("expenses", "Expenses"),
+    ("income", "Income"),
+    ("eating_out", "Eating out"),
+    ("transport", "Transport"),
+    ("fun", "Fun"),
+    ("pet", "Pet"),
+    ("photoo", "Photo"),
+    ("gift", "Gift"),
+    ("miscellaneous", "Miscellaneous"),
 ]
 
 
@@ -72,7 +72,7 @@ class AddExpense(FlaskForm):
         validators=[DataRequired()],
         render_kw={"placeholder": "Enter payee name"},
     )
-    category = SelectField("Category", choices=[(typ, typ) for typ in category_type])
+    category = SelectField("Category", choices=category_types)
     description = StringField(
         "Description",
         validators=[DataRequired()],
@@ -103,7 +103,7 @@ class EditExpense(FlaskForm):
         "Payee",
         validators=[DataRequired()],
     )
-    category = SelectField("Category", choices=[(typ, typ) for typ in category_type])
+    category = SelectField("Category", choices=category_types)
     description = StringField(
         "Description",
         validators=[DataRequired()],

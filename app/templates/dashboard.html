@@ -47,11 +47,7 @@
 
 {% block javascript %}
 <script>
-    Chart.scaleService.updateScaleDefaults("linear", {
-        ticks: {
-            min: 0,
-        },
-    }); /*TO BE ABLE TO SCALE THE GRAPHS */
+     /*TO BE ABLE TO SCALE THE GRAPHS */
 
     /* INCOME VS EXPENSES GRAPH */
 
@@ -61,7 +57,7 @@
         labels: ['income', 'expenses'],
             datasets: [{
                 label: "Income Vs Expenses",
-                data: [{{income_values | safe}}, {{expense_values | safe}}],
+                data: [{{income_category_links | safe}}, {{expense_category_links | safe}}],
                 backgroundColor: ['#5DA5DA ', '#FAA43A', '#60BD68',
                     '#B276B2', '#E16851', '#FB8267'],
 
@@ -116,54 +112,35 @@
 
     /* MAKE THE GRAPH CLICKABLE */
 
-    const categoryLabel = {{category_names | safe}}
-    console.log(categoryLabel)
 
-    const categoryData = {{category_amount | safe}}
-    console.log(categoryData[1])
 
-    /* https://www.youtube.com/watch?v=dIFLeum2WQY */
 
-    /*data: [
-        {name: categoryLabel[0], expenses: {category: categoryData[0], link: "/category/{{category}}"}},
-        {name: categoryLabel[1], expenses: {category: categoryData[1], link: "/category/{{category}}"}},
-        {name: categoryLabel[2], expenses: {category: categoryData[2], link: "/category/{{category}}"}},
-        {name: categoryLabel[3], expenses: {category: categoryData[3], link: "/category/{{category}}"}},
-        {name: categoryLabel[4], expenses: {category: categoryData[4], link: "/category/{{category}}"}},
-        {name: categoryLabel[5], expenses: {category: categoryData[5], link: "/category/{{category}}"}},
-    ]*/
 
-    /*data: [
-                {name: "Mon", expenses: {category: 1, link: "/category/{{category}}"}},
-                {name: "Mon", expenses: {category: 2, link: "/category/{{category}}"}},
-                {name: "Mon", expenses: {category: 3, link: "/category/{{category}}"}},
-                {name: "Mon", expenses: {category: 4, link: "/category/{{category}}"}},
-                {name: "Mon", expenses: {category: 5, link: "/category/{{category}}"}},
-                {name: "Mon", expenses: {category: 6, link: "/category/{{category}}"}},
-            ] */
-
-    /*data: categoryData */
 
     const canvas = document.getElementById("income_vs_category");
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d');
 
     const categoryChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: categoryLabel,
+
             datasets: [{
                 label: "Categories Expenses",
-                data: categoryData,
-        backgroundColor: ['#5DA5DA ', '#FAA43A', '#60BD68',
-            '#B276B2', '#E16851', '#FB8267'],
-        borderWidth: 1,
-        hoverBorderColor: "black",
-        hoverBorderWidth: 2,
-        hoverBackgroundColor: 'rgba(154, 245, 140)',
-        pointHoverRadius: 5
-    }],
+                data:{{chart_data | safe}},
+                backgroundColor: ['#5DA5DA ', '#FAA43A', '#60BD68',
+                    '#B276B2', '#E16851', '#FB8267'],
+                borderWidth: 1,
+                hoverBorderColor: "black",
+                hoverBorderWidth: 2,
+                hoverBackgroundColor: 'rgba(154, 245, 140)',
+                pointHoverRadius: 5
+            }],
         },
     options: {
+            parsing: {
+                xAxisKey: 'name',
+                yAxisKey: 'expenses.category'
+            },
             title: {
                 display: true,
                     text: "Categories Expenses",
@@ -183,40 +160,17 @@
         }
     })
 
-    /*scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        },
-        onClick:function(e){
-          var activePoints = categoryChart.getElementsAtEvent(e);
-          var selectedIndex = activePoints[0]._index;
-          alert(this.data.datasets[0].data[selectedIndex]);
-        } */
-
-        /* parsing:{
-                xAxisKey: 'name',
-                yAxisKey: 'expenses.category'
-            } */
-
 
     function clickHandler(click){
-        const points = categoryChart.getElementAtEvent(click, 'nearest', {intersect: true}, true);
-
+        console.log(click)
+        const points = categoryChart.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
+        console.log(points)
         if(points.length) {
-            const firstPoint = points[0]
-            console.log(firstPoint)
+            const selected_category = points[0]
 
-            const value = categoryChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+            const category_link = categoryChart.data.datasets[0].data[selected_category.index].expenses.link;
 
-            /*IT IS NOT PASSING THE LABELS AND DATA */
-            /* datasets[firstPoint.datasetIndex].data[firstPoint.index] */
-            /* labels[firstPoint.index]*/
-            console.log(value)
-
-            window.open(value.expenses.link)
+            window.open(category_link)
         }
     }
     canvas.onclick = clickHandler;

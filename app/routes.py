@@ -36,6 +36,7 @@ def signup():
         )  # Passing objects to class Users from the signup form
         db.session.add(user)  ## SQLAlchemy to add to the table
         db.session.commit()  ##SQLAlchemy to commit changes to database
+
         return redirect("/login")
 
     else:
@@ -68,6 +69,7 @@ def login():
                 session["id"] = user_id
                 session["name"] = name
                 session["admin"] = admin
+
                 return redirect("/expenses")
         flash("Email address or password is incorrect. Please try again.", "error")
         return redirect("/login")  ## DISPLAY EXPENSES
@@ -83,12 +85,32 @@ def logout():
 
 
 ## SHOW EXPENSES ##
-@app.route("/expenses")
+@app.route("/expenses", methods=["GET", "POST"])
 def show_expenses():
     user_id = session.get("id")
+    form = DateRange()
+
     user_expenses = (
         db.session.query(Expenses).join(Users).filter(Users.id == user_id).all()
     )
+
+    if form.validate_on_submit():
+        start_date = request.form.get("start_date")  # 2023-07-11
+        end_date = request.form.get("end_date")  # 2023-07-17
+
+        results = (
+            db.session.query(
+                Expenses.date,
+                Expenses.payee,
+                Expenses.category,
+                Expenses.description,
+                Expenses.amount,
+            )
+            .filter(Expenses.date.between(start_date, end_date))
+            .filter(Expenses.user_id == user_id)
+            .all()
+        )
+        return render_template("expenses.html", results=results)
 
     if user_expenses == []:
         return render_template("expenses.html", user_id=user_id)
@@ -123,6 +145,7 @@ def show_expenses():
             total_expense=total_expense,
             total_income=total_income,
             net_balance=net_balance,
+            form=form,
         )
 
 
@@ -212,7 +235,7 @@ def dashboard():
     ##SPEND BY DATE
     dates = (
         db.session.query(func.sum(Expenses.amount), Expenses.date)
-        .filter(Expenses.category != "Income")
+        .filter(Expenses.category != "Income", Expenses.user_id == user_id)
         .group_by(Expenses.date)
         .order_by(Expenses.date)
         .all()
@@ -230,20 +253,20 @@ def dashboard():
 
     category_comparison = (
         db.session.query(func.sum(Expenses.amount), Expenses.category)
-        .filter(Expenses.category != "Income")
+        .filter(Expenses.category != "Income", Expenses.user_id == user_id)
         .group_by(Expenses.category)
         .order_by(Expenses.category)
         .all()
     )
 
-    category_amount = []
-    category_names = []
+    chart_data = []
     for amount, name in category_comparison:
-        category_amount.append(amount)
-        category_names.append(name)
+        category = {
+            "name": name,
+            "expenses": {"category": amount, "link": f"/category/{name}"},
+        }
+        chart_data.append(category)
 
-    print(category_amount)
-    print(category_names)
     ##DISPLAY TOTAL BY CATEGORY
 
     results = (
@@ -260,13 +283,13 @@ def dashboard():
         expense_values=expense_values,
         amount_by_date=amount_by_date,
         date_label=date_label,
-        category_amount=category_amount,
-        category_names=category_names,
+        chart_data=chart_data,
     )
 
 
 @app.route("/category/<category>")
 def category(category):
+    print(category)
     user_id = session.get("id")
     results = (
         db.session.query(Expenses.date, Expenses.payee, Expenses.amount)
@@ -326,26 +349,3 @@ def weekly():
     total = total_income - total_expense
 
     return render_template("weekly.html", results=results, total=total)
-
-
-@app.route("/sort", methods=["GET", "POST"])
-def sort_by_date():
-    user_id = session.get("id")
-    form = DateRange()
-
-    if form.validate_on_submit():
-        start_date = request.form.get("start_date")  # 2023-07-11
-        end_date = request.form.get("end_date")  # 2023-07-17
-
-        results = (
-            db.session.query(
-                Expenses.date, Expenses.payee, Expenses.description, Expenses.amount
-            )
-            .filter(Expenses.date.between(start_date, end_date))
-            .filter(Expenses.user_id == user_id)
-            .all()
-        )
-        print(results)
-        return render_template("sort.html", results=results)
-    else:
-        return render_template("sort.html", form=form)
