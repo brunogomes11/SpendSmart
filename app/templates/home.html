@@ -1,11 +1,26 @@
 {% extends 'base.html' %} {% block main %}
-<h1>Main page</h1>
-{% if session.name %}
-<a href="/expenses">Expenses</a>
+<!-- <a href="/expenses">Expenses</a>
 <a href="/dashboard">Dashboard</a>
-<a href="/weekly">Weekly</a>
-<a href="/category">Category</a> NEEDS A category name {% else %}
-<a href="/signup">Sign up</a>
-<a href="/login">Login</a>
+<a href="/weekly">Weekly</a> -->
 
-{% endif %} {% endblock%}
+<div class="banner-area">
+    <button class="btn-login-banner"><a href="/login">Login</a></button>
+</div>
+<div class="content-area">
+    <div class="wrapper">
+        <h2>Details</h2>
+        <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged. It was popularised in the 1960s
+            with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus
+            PageMaker including versions of Lorem Ipsum.
+        </p>
+    </div>
+</div>
+
+{% endblock%}

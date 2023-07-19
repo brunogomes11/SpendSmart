@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, request, redirect, session, flash
+from flask import render_template, request, redirect, session, flash, url_for
 from app.models import Users, Expenses
 from app.forms import Signup, Login, AddExpense, EditExpense, DateRange
 from datetime import datetime, timedelta
@@ -117,13 +117,13 @@ def show_expenses():
     else:
         expenses = (
             db.session.query(Expenses)
-            .filter(Expenses.user_id == user_id, Expenses.category != "Income")
+            .filter(Expenses.user_id == user_id, Expenses.category != "income")
             .all()
         )
 
         income = (
             db.session.query(Expenses)
-            .filter(Expenses.user_id == user_id, Expenses.category == "Income")
+            .filter(Expenses.user_id == user_id, Expenses.category == "income")
             .all()
         )
 
@@ -213,7 +213,7 @@ def dashboard():
     income = (
         db.session.query(Expenses.category, func.sum(Expenses.amount).label("total"))
         .filter(Expenses.user_id == user_id)
-        .filter(Expenses.category == "Income")
+        .filter(Expenses.category == "income")
         .group_by(Expenses.category)
         .all()
     )
@@ -222,7 +222,7 @@ def dashboard():
     expenses = (
         db.session.query(func.sum(Expenses.amount).label("total"))
         .filter(Expenses.user_id == user_id)
-        .filter(Expenses.category != "Income")
+        .filter(Expenses.category != "income")
         .all()
     )
 
@@ -235,7 +235,7 @@ def dashboard():
     ##SPEND BY DATE
     dates = (
         db.session.query(func.sum(Expenses.amount), Expenses.date)
-        .filter(Expenses.category != "Income", Expenses.user_id == user_id)
+        .filter(Expenses.category != "income", Expenses.user_id == user_id)
         .group_by(Expenses.date)
         .order_by(Expenses.date)
         .all()
@@ -253,7 +253,7 @@ def dashboard():
 
     category_comparison = (
         db.session.query(func.sum(Expenses.amount), Expenses.category)
-        .filter(Expenses.category != "Income", Expenses.user_id == user_id)
+        .filter(Expenses.category != "income", Expenses.user_id == user_id)
         .group_by(Expenses.category)
         .order_by(Expenses.category)
         .all()
@@ -321,7 +321,7 @@ def weekly():
         .filter(Expenses.date >= start_date)
         .filter(Expenses.user_id == user_id)
         .order_by(Expenses.date.asc())
-        .filter(Expenses.category != "Income")
+        .filter(Expenses.category != "income")
         .all()
     )
 
@@ -330,7 +330,7 @@ def weekly():
         .filter(Expenses.date >= start_date)
         .filter(Expenses.user_id == user_id)
         .order_by(Expenses.date.asc())
-        .filter(Expenses.category == "Income")
+        .filter(Expenses.category == "income")
         .all()
     )
 
@@ -346,6 +346,12 @@ def weekly():
         total_expense += data.amount
     total_expense = round(total_expense, 2)
 
-    total = total_income - total_expense
+    net_balance = total_income - total_expense
 
-    return render_template("weekly.html", results=results, total=total)
+    return render_template(
+        "weekly.html",
+        results=results,
+        net_balance=net_balance,
+        total_income=total_income,
+        total_expense=total_expense,
+    )

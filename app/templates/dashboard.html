@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block main %}
 
-<table>
+<!-- <table>
     <tr>
         <th>Category</th>
         <th>Total</th>
@@ -11,7 +11,7 @@
         <td>A${{ total }}</td>
     </tr>
     {% endfor %}
-</table>
+</table> -->
 
 <h1>Dashboard</h1>
 
@@ -57,7 +57,7 @@
         labels: ['income', 'expenses'],
             datasets: [{
                 label: "Income Vs Expenses",
-                data: [{{income_category_links | safe}}, {{expense_category_links | safe}}],
+                data: [{{income_values | safe}}, {{expense_values | safe}}],
                 backgroundColor: ['#5DA5DA ', '#FAA43A', '#60BD68',
                     '#B276B2', '#E16851', '#FB8267'],
 
@@ -162,9 +162,9 @@
 
 
     function clickHandler(click){
-        console.log(click)
+
         const points = categoryChart.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true);
-        console.log(points)
+
         if(points.length) {
             const selected_category = points[0]
 
