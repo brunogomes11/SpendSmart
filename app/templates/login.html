@@ -33,8 +33,7 @@
             <li>{{ message }}</li>
             {% endfor %}
         </ul>
-        {% endif %} {% endwith %}
-        <div class="btn-submit-login">{{ form.submit }}</div>
+        {% endif %} {% endwith %} {{ form.submit(class_="btn-submit-login") }}
     </form>
 </div>
 {% endblock%}

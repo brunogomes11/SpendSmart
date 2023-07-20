@@ -276,39 +276,14 @@ def dashboard():
         .order_by(func.sum(Expenses.amount).desc())
         .all()
     )
-    return render_template(
-        "dashboard.html",
-        results=results,
-        income_values=income_values,
-        expense_values=expense_values,
-        amount_by_date=amount_by_date,
-        date_label=date_label,
-        chart_data=chart_data,
-    )
 
-
-@app.route("/category/<category>")
-def category(category):
-    print(category)
-    user_id = session.get("id")
-    results = (
-        db.session.query(Expenses.date, Expenses.payee, Expenses.amount)
-        .filter(Expenses.user_id == user_id)
-        .filter(Expenses.category == category)
-        .all()
-    )
-
-    return render_template("category.html", results=results)
-
-
-@app.route("/weekly")
-def weekly():
+    ###### WEEKLY TEST ######
     user_id = session.get("id")
     today = datetime.today().date()
     end_date = today
     start_date = end_date - timedelta(days=7)
 
-    results = (
+    weekly = (
         db.session.query(Expenses.date, Expenses.payee, Expenses.amount)
         .filter(Expenses.date >= start_date)
         .filter(Expenses.user_id == user_id)
@@ -349,9 +324,36 @@ def weekly():
     net_balance = total_income - total_expense
 
     return render_template(
-        "weekly.html",
+        "dashboard.html",
         results=results,
+        income_values=income_values,
+        expense_values=expense_values,
+        amount_by_date=amount_by_date,
+        date_label=date_label,
+        chart_data=chart_data,
+        weekly=weekly,
         net_balance=net_balance,
         total_income=total_income,
         total_expense=total_expense,
     )
+
+
+@app.route("/category/<category>")
+def category(category):
+    print(category)
+    user_id = session.get("id")
+    results = (
+        db.session.query(Expenses.date, Expenses.payee, Expenses.amount)
+        .filter(Expenses.user_id == user_id)
+        .filter(Expenses.category == category)
+        .all()
+    )
+
+    return render_template("category.html", results=results)
+
+
+# @app.route("/dashboard")
+# def weekly():
+#     return render_template(
+#         "dashboard.html",
+#     )

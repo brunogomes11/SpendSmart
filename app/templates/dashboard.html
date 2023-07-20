@@ -12,22 +12,49 @@
     </tr>
     {% endfor %}
 </table> -->
-<div class="graphs">
+<h1 class="dash-header">Dashboard</h1>
+<div class="dashboard">
+    <div class="graph_container">
+        <div class="income_vs_category chart">
+            <canvas id="income_vs_category"></canvas>
+        </div>
+
+        <div class="expenses_by_date chart">
+            <canvas id="expenses_by_date"></canvas>
+        </div>
+    </div>
+
     <div class="income_vs_expense chart">
         <canvas id="income_vs_expense"></canvas>
     </div>
 
-    <div class="expenses_by_date chart">
-        <canvas id="expenses_by_date"></canvas>
-    </div>
+    <table class="table-weekly">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Payee</th>
+                <th>Total</th>
+            </tr>
+        </thead>
 
-    <div class="income_vs_category chart">
-        <canvas id="income_vs_category"></canvas>
+        <tbody>
+            {% for date, payee, amount in weekly %}
+            <tr>
+                <td>{{date}}</td>
+                <td>{{payee}}</td>
+                <td>A${{ amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="total_summary">
+        <p>Total Income (A$): {{total_income}}</p>
+        <p>Total Expenses (A$): {{total_expense}}</p>
+        <p>Net Balance (A$): {{net_balance}}</p>
     </div>
 </div>
 {% block javascript %}
 <script>
-     /*TO BE ABLE TO SCALE THE GRAPHS */
 
     /* INCOME VS EXPENSES GRAPH */
 
