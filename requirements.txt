@@ -6,3 +6,4 @@ Flask-SQLAlchemy
 WTForms
 bcrypt
 sqlalchemy
+flask_wtf
