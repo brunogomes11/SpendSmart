@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block main %}{% if expenses %}
+{% extends 'base.html' %} {% block main %} {% if expenses %}
 <h1 class="welcome">Hey {{session.name}}, these are your expenses:</h1>
 <div class="expenses">
     <div class="form-summary-container">
@@ -56,6 +56,7 @@
             <a href="/dashboard">Dashboard</a>
         </button>
     </div>
+
     <table class="expenses-table">
         <thead>
             <tr>
@@ -124,4 +125,9 @@
         {% endfor %}
     </table>
 </div>
+
+{% else %}
+
+<p>{{session.name}}, would you like to start adding expenses?</p>
+<a href="/add_expense">Add Expenses</a>
 {% endif %} {% endblock%}
