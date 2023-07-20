@@ -51,10 +51,9 @@
         </div>
     </div>
     <div class="btn-expenses">
-        <button class="add-btn"><a href="/add_expense">Add expense</a></button>
-        <button class="dashboard-btn" role="button">
-            <a href="/dashboard">Dashboard</a>
-        </button>
+        <a href="/add_expense" class="add-btn">Add expense</a>
+
+        <a href="/dashboard" class="dashboard-btn">Dashboard</a>
     </div>
 
     <table class="expenses-table">
@@ -69,8 +68,8 @@
             </tr>
         </thead>
 
-        {% for expense in expenses %}
         <tbody>
+            {% for expense in expenses %}
             <tr>
                 <td>{{ expense.date }}</td>
                 <td>{{ expense.payee }}</td>
@@ -78,13 +77,15 @@
                 <td>{{ expense.description }}</td>
                 <td>A${{ expense.amount }}</td>
                 <td>
-                    <a href="/edit_expense/{{expense.expense_id}}"
+                    <a
+                        class="edit-delete-btn"
+                        href="/edit_expense/{{expense.expense_id}}"
                         >Edit/Delete</a
                     >
                 </td>
             </tr>
+            {% endfor %}
         </tbody>
-        {% endfor %}
     </table>
 
     {% elif results %}
@@ -107,8 +108,8 @@
                 <th>Action</th>
             </tr>
         </thead>
-        {% for result in results %}
         <tbody>
+            {% for result in results %}
             <tr>
                 <td>{{result.date}}</td>
                 <td>{{result.payee}}</td>
@@ -116,18 +117,23 @@
                 <td>{{result.description}}</td>
                 <td>A${{ result.amount }}</td>
                 <td>
-                    <a href="/edit_expense/{{result.expense_id}}"
+                    <a
+                        class="edit-delete-btn"
+                        href="/edit_expense/{{result.expense_id}}"
                         >Edit/Delete</a
                     >
                 </td>
             </tr>
+            {% endfor %}
         </tbody>
-        {% endfor %}
     </table>
 </div>
 
 {% else %}
-
-<p>{{session.name}}, would you like to start adding expenses?</p>
-<a href="/add_expense">Add Expenses</a>
+<div class="expenses-welcome">
+    <h1 class="new-expenses-header">
+        {{session.name}}, would you like to start adding expenses?
+    </h1>
+    <a href="/add_expense" class="add-btn">Add Expenses</a>
+</div>
 {% endif %} {% endblock%}

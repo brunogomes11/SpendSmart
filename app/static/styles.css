@@ -11,7 +11,6 @@ body {
     font-family: "Krona One", sans-serif;
     margin-left: 30px;
     margin-right: 30px;
-    height: 100%;
 }
 
 .container {
@@ -266,12 +265,13 @@ body {
 }
 
 .custom-input-style {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     font-size: 18px;
+    text-align: center;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin: 5px 0 10px 0;
 }
 
 /* ONCE LOGIN IN THEN HANDLE LOGIN INFO AND BUTTONS */
@@ -325,11 +325,11 @@ body {
 /* ???? MAKE THE EVEN ROWS COLORED  ???? */
 
 .expenses-table tbody tr:nth-child(even) {
-    background-color: #454545;
+    background-color: rgba(43, 48, 44, 0.197);
 }
 
 .expenses-table tbody tr:nth-child(odd) {
-    background-color: #50a060;
+    background-color: rgba(61, 179, 84, 0.345);
 }
 
 .expenses-table tbody tr:last-of-type {
@@ -368,7 +368,7 @@ body {
 }
 
 .span-balance {
-    color: #5db7de;
+    color: #f5e6e8;
 }
 .form-summary-container {
     display: grid;
@@ -427,8 +427,9 @@ body {
 }
 
 .dashboard-btn {
+    display: inline-block;
     height: 55px;
-    margin: auto 10px auto 10px;
+    margin: 10px;
     border: none;
     border-radius: 5px;
     background-color: #fe5e41;
@@ -436,24 +437,25 @@ body {
     font-size: 17px;
     font-weight: 600;
     cursor: pointer;
-    padding: 1rem;
-}
-
-.dashboard-btn a {
-    text-decoration: none;
+    text-decoration: none; /* Move text-decoration from .dashboard-btn a to .dashboard-btn */
+    line-height: 55px; /* Vertically center the text inside the button */
+    padding: 0 20px; /* Adjust padding for horizontal spacing */
 }
 
 .add-btn {
+    display: inline-block;
     height: 55px;
-    margin: auto 10px auto 10px;
+    margin: 10px;
     border: none;
     border-radius: 5px;
     background-color: #5db7de;
-    color: #50a060;
+    color: #f5e6e8;
     font-size: 17px;
     font-weight: 600;
     cursor: pointer;
-    padding: 1rem;
+    text-decoration: none;
+    line-height: 55px;
+    padding: 0 20px;
 }
 
 .add-btn a {
@@ -566,7 +568,7 @@ body {
     justify-content: center;
     background-color: #454545;
     color: #f5e6e8;
-    margin: 20px auto 20px auto;
+    margin: 20px auto 70px auto;
     width: 400px;
     border-radius: 6px;
     padding: 0px 0px 20px 0px;
@@ -624,4 +626,32 @@ body {
     font-size: 17px;
     font-weight: 600;
     cursor: pointer;
+}
+
+/* FIRST TIME ON EXPENSES PAGE */
+.expenses-welcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.new-expenses-header {
+    color: #f5e6e8;
+}
+
+.edit-delete-btn {
+    display: inline-block;
+    height: 40px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5db7de;
+    color: #f5e6e8;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 40px;
+    padding: 0 10px;
 }
