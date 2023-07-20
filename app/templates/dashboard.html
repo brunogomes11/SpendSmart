@@ -1,18 +1,8 @@
 {% extends 'base.html' %} {% block main %}
-
-<!-- <table>
-    <tr>
-        <th>Category</th>
-        <th>Total</th>
-    </tr>
-    {% for category, total in results %}
-    <tr>
-        <td><a href="/category/{{category}}">{{ category }}</a></td>
-        <td>A${{ total }}</td>
-    </tr>
-    {% endfor %}
-</table> -->
-<h1 class="dash-header">Dashboard</h1>
+<div class="container-dash">
+    <h1 class="dash-header">Dashboard</h1>
+    <button class="btn-expenses-back"><a href="/expenses">Expenses</a></button>
+</div>
 <div class="dashboard">
     <div class="graph_container">
         <div class="income_vs_category chart">
@@ -28,7 +18,7 @@
         <canvas id="income_vs_expense"></canvas>
     </div>
 
-    <table class="table-weekly">
+    <!-- <table class="table-weekly">
         <thead>
             <tr>
                 <th>Date</th>
@@ -51,7 +41,7 @@
         <p>Total Income (A$): {{total_income}}</p>
         <p>Total Expenses (A$): {{total_expense}}</p>
         <p>Net Balance (A$): {{net_balance}}</p>
-    </div>
+    </div> -->
 </div>
 {% block javascript %}
 <script>

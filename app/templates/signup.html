@@ -5,7 +5,7 @@
         {{form.csrf_token}}
         <p>
             {{form.email.label}}<br />
-            {{form.email}}
+            {{form.email(class='custom-input-style')}}
         </p>
         {% if form.email.errors %}
         <ul class="errors">
@@ -16,7 +16,7 @@
         {% endif %}
         <p>
             {{form.name.label}}<br />
-            {{form.name}}
+            {{form.name(class='custom-input-style')}}
         </p>
         {% if form.name.errors %}
         <ul class="errors">
@@ -27,7 +27,7 @@
         {% endif %}
         <p>
             {{form.password.label}}<br />
-            {{form.password}}
+            {{form.password(class='custom-input-style')}}
         </p>
 
         {% if form.password.errors %}
@@ -39,7 +39,7 @@
         {% endif %}
         <p>
             {{form.confirm.label}}<br />
-            {{form.confirm}}
+            {{form.confirm(class='custom-input-style')}}
         </p>
         {% if form.confirm.errors %}
         <ul class="errors">

@@ -6,7 +6,7 @@
 
         <p class="email-label-login">{{form.email.label}}</p>
 
-        <p class="email-login">{{form.email}}</p>
+        <p class="email-login">{{form.email(class='custom-input-style')}}</p>
 
         {% if form.email.errors %}
         <ul class="errors">
@@ -18,7 +18,9 @@
 
         <p class="password-label-login">{{form.password.label}}</p>
 
-        <p class="password-login">{{form.password}}</p>
+        <p class="password-login">
+            {{form.password(class='custom-input-style')}}
+        </p>
 
         {% if form.password.errors %}
         <ul class="errors">

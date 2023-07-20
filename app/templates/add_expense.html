@@ -1,55 +1,57 @@
 {% extends 'base.html' %} {% block main %}
-<form action="/add_expense" method="POST">
-    {{form.csrf_token}} {{ form.hidden_tag() }}
+<div class="add-expense">
+    <form action="/add_expense" method="POST">
+        {{form.csrf_token}} {{ form.hidden_tag() }}
 
-    <p>{{ form.date.label }} {{ form.date }}</p>
+        <p>{{ form.date.label }} {{ form.date }}</p>
 
-    {% if form.date.errors %}
-    <ul class="errors">
-        {% for error in form.date.errors %}
-        <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+        {% if form.date.errors %}
+        <ul class="errors">
+            {% for error in form.date.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
-    <p>{{ form.payee.label }} {{ form.payee }}</p>
+        <p>{{ form.payee.label }} {{ form.payee }}</p>
 
-    {% if form.payee.errors %}
-    <ul class="errors">
-        {% for error in form.payee.errors %}
-        <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+        {% if form.payee.errors %}
+        <ul class="errors">
+            {% for error in form.payee.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
-    <p>{{ form.category.label }} {{ form.category }}</p>
+        <p>{{ form.category.label }} {{ form.category }}</p>
 
-    {% if form.category.errors %}
-    <ul class="errors">
-        {% for error in form.category.errors %}
-        <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+        {% if form.category.errors %}
+        <ul class="errors">
+            {% for error in form.category.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
-    <p>{{ form.description.label }} {{ form.description }}</p>
+        <p>{{ form.description.label }} {{ form.description }}</p>
 
-    {% if form.description.errors %}
-    <ul class="errors">
-        {% for error in form.description.errors %}
-        <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+        {% if form.description.errors %}
+        <ul class="errors">
+            {% for error in form.description.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
-    <p>{{ form.amount.label }} {{ form.amount }}</p>
+        <p>{{ form.amount.label }} {{ form.amount }}</p>
 
-    {% if form.amount.errors %}
-    <ul class="errors">
-        {% for error in form.amount.errors %}
-        <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %} {{ form.add }}
-</form>
+        {% if form.amount.errors %}
+        <ul class="errors">
+            {% for error in form.amount.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %} {{ form.add(class="add-btn-form") }}
+    </form>
+</div>
 {% endblock%}

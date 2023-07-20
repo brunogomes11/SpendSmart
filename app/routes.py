@@ -91,7 +91,11 @@ def show_expenses():
     form = DateRange()
 
     user_expenses = (
-        db.session.query(Expenses).join(Users).filter(Users.id == user_id).all()
+        db.session.query(Expenses)
+        .join(Users)
+        .filter(Users.id == user_id)
+        .order_by(Expenses.date.desc())
+        .all()
     )
 
     if form.validate_on_submit():
@@ -99,13 +103,7 @@ def show_expenses():
         end_date = request.form.get("end_date")  # 2023-07-17
 
         results = (
-            db.session.query(
-                Expenses.date,
-                Expenses.payee,
-                Expenses.category,
-                Expenses.description,
-                Expenses.amount,
-            )
+            db.session.query(Expenses)
             .filter(Expenses.date.between(start_date, end_date))
             .filter(Expenses.user_id == user_id)
             .all()
@@ -340,7 +338,6 @@ def dashboard():
 
 @app.route("/category/<category>")
 def category(category):
-    print(category)
     user_id = session.get("id")
     results = (
         db.session.query(Expenses.date, Expenses.payee, Expenses.amount)
@@ -350,10 +347,3 @@ def category(category):
     )
 
     return render_template("category.html", results=results)
-
-
-# @app.route("/dashboard")
-# def weekly():
-#     return render_template(
-#         "dashboard.html",
-#     )
