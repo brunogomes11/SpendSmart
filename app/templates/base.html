@@ -13,35 +13,54 @@
         <!-- Chart.js library for creating GRAPHS -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+        <script
+            src="{{url_for('static', filename='animations.js')}}"
+            defer
+        ></script>
         <title>Expenses Tracker</title>
     </head>
     <body>
-        <div class="box-area">
-            <header>
-                <div class="wrapper">
-                    <div class="logo">
-                        <img
+        <header>
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="/"
+                        ><img
                             src="{{url_for('static', filename='logo-green-back.png')}}"
                             alt="logo"
                             class="logo-img"
-                        />
-                    </div>
-                    <nav>
-                        <a href="">How It Works</a>
-                        <a href="">What You Get</a>
-                        <a href="">About us</a>
-
-                        {% if not session.name %}
-                        <a href="/signup">Sign up</a>
-                        <a href="/login">Login</a>
-                        {% else %}
-                        <h3>Logged in as {{ session.name }}</h3>
-                        <a href="/logout">Logout</a>
-                        {% endif %}
-                    </nav>
+                    /></a>
                 </div>
-            </header>
-        </div>
+                <a href="#" class="toggle-btn">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </a>
+                <div class="navbar-links">
+                    <ul class="ul-info">
+                        <li><a href="">How It Works</a></li>
+                        <li><a href="">What You Get</a></li>
+                        <li><a href="">About us</a></li>
+                    </ul>
+                </div>
+                <div class="enter-links">
+                    {% if not session.name %}
+                    <button class="signup-btn">
+                        <a href="/signup">Signup</a>
+                    </button>
+                    <button class="login-btn">
+                        <a href="/login">Login</a>
+                    </button>
+
+                    {% else %}
+                    <h4>Logged in as {{ session.name }}</h4>
+                    <button class="logout-btn">
+                        <a href="/logout">Logout</a>
+                    </button>
+
+                    {% endif %}
+                </div>
+            </nav>
+        </header>
         {% block main %} {% endblock%}
     </body>
 </html>

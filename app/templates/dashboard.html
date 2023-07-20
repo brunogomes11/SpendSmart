@@ -12,39 +12,19 @@
     </tr>
     {% endfor %}
 </table> -->
+<div class="graphs">
+    <div class="income_vs_expense chart">
+        <canvas id="income_vs_expense"></canvas>
+    </div>
 
-<h1>Dashboard</h1>
+    <div class="expenses_by_date chart">
+        <canvas id="expenses_by_date"></canvas>
+    </div>
 
-<div class="col-xs-10, col-sm-6">
-    <div class="card card-style mb-2">
-        <div class="card-body">
-            <div class="chart-container" style="position: relative">
-                <canvas id="income_vs_expense"></canvas>
-            </div>
-        </div>
+    <div class="income_vs_category chart">
+        <canvas id="income_vs_category"></canvas>
     </div>
 </div>
-
-<div class="col-xs-10, col-sm-6">
-    <div class="card card-style mb-2">
-        <div class="card-body">
-            <div class="chart-container" style="position: relative">
-                <canvas id="expenses_by_date"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-xs-10 col-sm-6 col-md-6">
-    <div class="card card-style mb-2">
-        <div class="card-body">
-            <div class="chart-container" style="position: relative">
-                <canvas id="income_vs_category"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
 {% block javascript %}
 <script>
      /*TO BE ABLE TO SCALE THE GRAPHS */

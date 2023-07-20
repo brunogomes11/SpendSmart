@@ -1,82 +1,105 @@
 {% extends 'base.html' %} {% block main %}{% if expenses %}
-<h1>Hey {{session.name}}, these are your expenses:</h1>
-<a href="/dashboard">Dashboard</a>
-<a href="/weekly">Past 7 days expenses</a>
-<form action="/expenses" method="POST">
-    {{form.csrf_token}} {{ form.hidden_tag() }}
+<h1 class="welcome">Hey {{session.name}}, these are your expenses:</h1>
+<div class="expenses">
+    <button class="dashboard-btn" role="button">
+        <a href="/dashboard">Dashboard</a>
+    </button>
+    <!-- <a href="/weekly">Past 7 days expenses</a> -->
+    <div class="form-summary-container">
+        <div class="summary">
+            <p>Total Income (A$): {{total_income}}</p>
+            <p>Total Expenses (A$): {{total_expense}}</p>
+            <p>Net Balance (A$): {{net_balance}}</p>
+        </div>
 
-    <p>{{ form.start_date.label}} {{ form.start_date }}</p>
+        <div class="date-form">
+            <h3>Sort by Dates</h3>
+            <form action="/expenses" method="POST">
+                {{form.csrf_token}} {{ form.hidden_tag() }}
 
-    {% if form.start_date.errors %}
-    <ul class="errors">
-        {% for error in form.start_date.errors %}
-        <li>{{ error }}</li>
+                <div class="form-row">
+                    <label for="">{{ form.start_date.label}}</label>
+                    {{form.start_date }}
+                </div>
+
+                {% if form.start_date.errors %}
+                <ul class="errors">
+                    {% for error in form.start_date.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <div class="form-row">
+                    <label for="">{{ form.end_date.label}}</label>
+                    {{ form.end_date }}
+                </div>
+
+                {% if form.end_date.errors %}
+                <ul class="errors">
+                    {% for error in form.end_date.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %} {{ form.submit }}
+            </form>
+        </div>
+    </div>
+    <button class="add-btn"><a href="/add_expense">Add expense</a></button>
+
+    <table class="expenses-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Payee</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        {% for expense in expenses %}
+        <tbody>
+            <tr>
+                <td>{{ expense.date }}</td>
+                <td>{{ expense.payee }}</td>
+                <td>{{ expense.category.replace("_", " ") }}</td>
+                <td>{{ expense.description }}</td>
+                <td>A${{ expense.amount }}</td>
+                <td>
+                    <a href="/edit_expense/{{expense.expense_id}}"
+                        >Edit/Delete</a
+                    >
+                </td>
+            </tr>
+        </tbody>
         {% endfor %}
-    </ul>
-    {% endif %}
+    </table>
 
-    <p>{{ form.end_date.label}} {{ form.end_date }}</p>
+    {% elif results %}
 
-    {% if form.end_date.errors %}
-    <ul class="errors">
-        {% for error in form.end_date.errors %}
-        <li>{{ error }}</li>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Payee</th>
+            <th>Description</th>
+            <th>Total</th>
+        </tr>
+        {% for date, payee, category, description, amount in results %}
+        <tr>
+            <td>{{date}}</td>
+            <td>{{payee}}</td>
+            <td>{{category}}</td>
+            <td>{{description}}</td>
+            <td>A${{ amount }}</td>
+        </tr>
         {% endfor %}
-    </ul>
-    {% endif %} {{ form.submit }}
-</form>
+    </table>
 
-<table>
-    <tr>
-        <th>Date</th>
-        <th>Payee</th>
-        <th>Category</th>
-        <th>Description</th>
-        <th>Amount</th>
-        <th>Action</th>
-    </tr>
-    {% for expense in expenses %}
-    <tr>
-        <td>{{ expense.date }}</td>
-        <td>{{ expense.payee }}</td>
-        <td>{{ expense.category.replace("_", " ") }}</td>
-        <td>{{ expense.description }}</td>
-        <td>A${{ expense.amount }}</td>
-        <td>
-            <a href="/edit_expense/{{expense.expense_id}}">Edit/Delete</a>
-        </td>
-    </tr>
-    {% endfor %}
-    <p>Total Income (A$): {{total_income}}</p>
-    <p>Total Expenses (A$): {{total_expense}}</p>
-    <p>Net Balance (A$): {{net_balance}}</p>
-</table>
+    {% else %}
 
-<a href="/add_expense">Add expense</a>
-
-{% elif results %}
-
-<table>
-    <tr>
-        <th>Date</th>
-        <th>Payee</th>
-        <th>Description</th>
-        <th>Total</th>
-    </tr>
-    {% for date, payee, category, description, amount in results %}
-    <tr>
-        <td>{{date}}</td>
-        <td>{{payee}}</td>
-        <td>{{category}}</td>
-        <td>{{description}}</td>
-        <td>A${{ amount }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-{% else %}
-
-<p>{{session.name}}, would you like to start adding expenses?</p>
-<a href="/add_expense">Add Expenses</a>
-
+    <p>{{session.name}}, would you like to start adding expenses?</p>
+    <a href="/add_expense">Add Expenses</a>
+</div>
 {% endif %} {% endblock%}
