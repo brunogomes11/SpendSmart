@@ -21,7 +21,7 @@ My project is called SpendSmart, a user-friendly web application designed to hel
 5. Flask <img src="img/flask2.png" width="30" height="30">
 6. postgreSQL <img src="img/postgresql.png" width="30" height="30">
 7. SQLAlchemy <img src="img/sqlalchemy.png" width="40" height="40">
-8. WTForms <img src="img/wtforms.png" width="50" height="50">
+8. WTForms <img src="img/wt.png" width="40" height="40">
 9. Chart.js <img src="img/chart.png" width="30" height="30">
 10. Bcrypt <img src="img/bcrypt2.png" width="30" height="30">
 11. Git <img src="img/git.png" width="30" height="30">
