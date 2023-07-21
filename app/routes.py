@@ -21,17 +21,21 @@ def index():
 ## SIGNUP ##
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    form = Signup()  ## Signup class from WTForms passing the
+    form = Signup()  # Signup class from WTForms
 
     ## POST ##
+
+    # Valide the form call POST method
     if form.validate_on_submit():
-        form_password = request.values.get("password")  # Getting password from form
+        form_password = request.form.get("password")  # Getting password from form
+
         pw_hash = bcrypt.hashpw(
             form_password.encode(), bcrypt.gensalt()
         ).decode()  # Encrypting password
+
         user = Users(
-            email=request.values.get("email"),
-            name=request.values.get("name"),
+            email=request.form.get("email"),
+            name=request.form.get("name"),
             password_hash=pw_hash,
         )  # Passing objects to class Users from the signup form
         db.session.add(user)  ## SQLAlchemy to add to the table

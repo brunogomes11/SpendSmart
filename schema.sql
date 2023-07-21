@@ -4,8 +4,8 @@ INSERT INTO users(email, name, admin, password_hash) values ('bruno@bruno.com', 
 SELECT * from users;
 SELECT * from expenses;
 
-DROP TABLE expenses
-DROP TABLE users CASCADE
+DROP TABLE expenses;
+DROP TABLE users;
 
 SELECT category, sum(amount) as total from expenses where user_id = 2 group by category ORDER BY total DESC;
 
