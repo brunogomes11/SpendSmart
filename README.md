@@ -18,12 +18,12 @@ My project is called SpendSmart, a user-friendly web application designed to hel
 2. CSS <img src="img/css-3.png" width="30" height="30">
 3. Javascript <img src="img/js.png" width="30" height="30">
 4. Python <img src="img/python.png" width="30" height="30">
-5. Flask <img src="img/python.png" width="30" height="30">
+5. Flask <img src="img/flask2.png" width="30" height="30">
 6. postgreSQL <img src="img/postgresql.png" width="30" height="30">
 7. SQLAlchemy <img src="img/sqlalchemy.png" width="30" height="30">
-8. WTForms <img src="img/wtforms.png" width="30" height="30">
+8. WTForms <img src="img/wtforms.png" width="50" height="30">
 9. Chart.js <img src="img/chart.png" width="30" height="30">
-10. Bcrypt <img src="img/bcrypt.png" width="30" height="30">
+10. Bcrypt <img src="img/bcrypt2.png" width="30" height="30">
 11. Git <img src="img/git.png" width="30" height="30">
 12. VSCode <img src="img/vscode.png" width="30" height="30">
 13. [Render.com](https://render.com/)
