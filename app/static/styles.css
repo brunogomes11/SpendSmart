@@ -597,6 +597,7 @@ body {
     min-height: 300px;
     width: 100%;
     position: relative;
+    margin-bottom: 90px;
 }
 
 .graph-container {

@@ -1,14 +1,16 @@
-# :moneybag:SpendSmart:moneybag:
+# :moneybag:[SpendSmart](https://spendsmart-2n0e.onrender.com/):moneybag:
 
 ## created by Bruno Gomes
 
-<img src="static/banner.png" width="600" height="300">
+Application deployed :arrow_forward: [click here](https://spendsmart-2n0e.onrender.com/) :arrow_backward:
+
+<img src="img/banner.png" width="600" height="300">
 
 My project is called SpendSmart, a user-friendly web application designed to help individuals effectively manage their personal finances. With its intuitive interface and comprehensive features, users can easily track their expenses, record income, and gain valuable insights into their spending habits. The app allows users to create, edit, and delete expense records, view detailed graphs, and effortlessly monitor their financial progress. **SpendSmart** empowers users to take control of their finances and make informed decisions, ensuring a more organized and efficient approach to managing their day-to-day expenses.
 
 # Documentation
 
--   **full-stack database-backed application** with full **CRUD** (Create, Read, Update, Delete) functionality
+-   **Full-stack database-backed application** with full **CRUD** (Create, Read, Update, Delete) functionality
 
 ## Technologies Used
 
@@ -24,6 +26,7 @@ My project is called SpendSmart, a user-friendly web application designed to hel
 10. Bcrypt
 11. Git
 12. VSCode
+13. [Render.com](https://render.com/)
 
 ## Main Features
 
@@ -37,7 +40,7 @@ My project is called SpendSmart, a user-friendly web application designed to hel
 
 ## User Stories
 
-PICTURE
+<img src="img/user-stories.png" width="600" height="300">
 
 ## Data Model
 
@@ -48,7 +51,7 @@ The application has two tables: Users and Expenses.
 -   **Users** will store the personal data of our user such as their name and email
 -   **Expenses** will store the information about the type of expenses of each user, a description, the date of purchase/expense and finally the amount spent.
 
-PICTURE
+<img src="img/data-models.png" width="600" height="300">
 
 ## Approach Taken
 
@@ -102,10 +105,16 @@ if  expense:
 7. Styling:
 
 -   I followed a functional-first approach and prioritized implementing core functionalities before focusing on styling. Once the core elements were working, I styled the application using CSS. I applied styling to various components, including the navigation bar, home banner, footer, tables, forms, and graphs, enhancing the user experience.
--   Colours used from [Coolors](https://coolors.co/306b34-222e50-573112-bfd7ea-ff5a5f) : - ![#573112](https://placehold.co/15x15/573112/573112.png) `#573112` - ![#306B34](https://placehold.co/15x15/306B34/306B34.png) `#306B34` - ![#222E50](https://placehold.co/15x15/222E50/222E50.png) `#222E50` - ![#BFD7EA](https://placehold.co/15x15/BFD7EA/BFD7EA.png) `#BFD7EA` - ![#FF5A5F](https://placehold.co/15x15/FF5A5F/FF5A5F.png) `#FF5A5F` - ![#C5C51D](https://placehold.co/15x15/C5C51D/C5C51D.png) `#C5C51D`
--   Font Family from [FontSpace](https://www.fontspace.com/):
-    -   [Game Played](https://www.fontspace.com/game-played-font-f31380)
-    -   [Nintendo](https://www.fontspace.com/snes-font-f26537)
+-   Colours used from [Coolors](https://coolors.co/306b34-222e50-573112-bfd7ea-ff5a5f) :
+
+    -   ![#454545](https://placehold.co/15x15/454545/454545.png) `#454545`
+    -   ![#50A060](https://placehold.co/15x15/50A060/50A060.png) `#50A060`
+    -   ![#F5E6E8](https://placehold.co/15x15/F5E6E8/F5E6E8.png) `#F5E6E8`
+    -   ![#5DB7DE](https://placehold.co/15x15/5DB7DE/5DB7DE.png) `#5DB7DE`
+    -   ![#FE5E41](https://placehold.co/15x15/FE5E41/FE5E41.png) `#FE5E41`
+
+-   Font Family from [Google Fonts](https://fonts.google.com/):
+    -   [Krona One](https://fonts.google.com/specimen/Krona+One?query=Krona+on)
 
 ## Unsolved Problems
 
