@@ -1,15 +1,14 @@
 from app import app, db
-from flask import render_template, request, redirect, session, flash, url_for
+from flask import render_template, request, redirect, session, flash
 from app.models import Users, Expenses
 from app.forms import Signup, Login, AddExpense, EditExpense, DateRange
 from datetime import datetime, timedelta
 import bcrypt
 from sqlalchemy.sql import func
-from sqlalchemy import text
 
 
 # Flash message
-app.secret_key = "hello123"
+app.secret_key = "1beb6fffce134254bbcd520c5fac57d1"
 
 
 ## HOME ROUTE ##
@@ -45,7 +44,7 @@ def signup():
 
     else:
         ## GET ##
-        print(form.errors)
+
         return render_template("signup.html", form=form)
 
 
@@ -57,8 +56,8 @@ def login():
     if request.method == "POST":
         result = Users.query.all()
 
-        email_form = request.values.get("email")
-        password_form = request.values.get("password")
+        email_form = request.form.get("email")
+        password_form = request.form.get("password")
 
         for user in result:
             user_id = user.id
@@ -76,7 +75,7 @@ def login():
 
                 return redirect("/expenses")
         flash("Email address or password is incorrect. Please try again.", "error")
-        return redirect("/login")  ## DISPLAY EXPENSES
+        return redirect("/login")
     else:
         return render_template("login.html", form=form)
 
@@ -102,10 +101,15 @@ def show_expenses():
         .all()
     )
 
+    ## POST ##
+
+    # Valide the form call POST method
+
     if form.validate_on_submit():
         start_date = request.form.get("start_date")  # 2023-07-11
         end_date = request.form.get("end_date")  # 2023-07-17
 
+        ## DATE SORTED ##
         results = (
             db.session.query(Expenses)
             .filter(Expenses.date.between(start_date, end_date))
@@ -117,6 +121,7 @@ def show_expenses():
     if user_expenses == []:
         return render_template("expenses.html", user_id=user_id)
     else:
+        ## CALCULATE NET BALANCE ##
         expenses = (
             db.session.query(Expenses)
             .filter(Expenses.user_id == user_id, Expenses.category != "income")
@@ -158,8 +163,14 @@ def add_expense():
 
     form = AddExpense()
 
-    # POST
+    ## POST ##
+
+    # Valide the form call POST method
+
     if form.validate_on_submit():
+        # push information to the Expenses database with form info
+        ## different way getting results from the form
+
         new_expense = Expenses(
             date=form.date.data,
             payee=form.payee.data,
@@ -181,8 +192,6 @@ def add_expense():
 ## EDIT ##
 @app.route("/edit_expense/<int:expense_id>", methods=["GET", "POST"])
 def edit_expense(expense_id):
-    # user_id = session.get("id")
-
     expense = (
         db.session.query(Expenses).filter(Expenses.expense_id == expense_id).first()
     )
@@ -191,7 +200,7 @@ def edit_expense(expense_id):
     if expense:
         form = EditExpense(
             obj=expense
-        )  ## This is really great, it automatically populate the form with the database obj
+        )  ## This is really great, it automatically populate the form with the database obj (need to be all the same name)
 
         if form.validate_on_submit():
             if form.save.data:
@@ -209,10 +218,10 @@ def edit_expense(expense_id):
 def dashboard():
     user_id = session.get("id")
 
-    ## SETUP GRAPH FOR INCOME/EXPENSES
+    ##GRAPH FOR INCOME/EXPENSES
 
     # Get only the category INCOME and the total amount of incomes
-    income = (
+    incomes = (
         db.session.query(Expenses.category, func.sum(Expenses.amount).label("total"))
         .filter(Expenses.user_id == user_id)
         .filter(Expenses.category == "income")
@@ -228,13 +237,15 @@ def dashboard():
         .all()
     )
 
-    income_values = [row[1] for row in income]  ##TOTAL INCOME
-    print(income_values)
+    income_values = []
+    for income in incomes:
+        income_values.append(income[1])
 
-    expense_values = [row[0] for row in expenses]  ##TOTAL EXPENSES
-    print(expense_values)
+    expense_values = []
+    for expense in expenses:
+        expense_values.append(expense[0])
 
-    ##SPEND BY DATE
+    ##GRAPH FOR SPEND BY DATE
     dates = (
         db.session.query(func.sum(Expenses.amount), Expenses.date)
         .filter(Expenses.category != "income", Expenses.user_id == user_id)
@@ -245,13 +256,12 @@ def dashboard():
 
     amount_by_date = []
     date_label = []
+
     for amount, date in dates:
         amount_by_date.append(amount)
         date_label.append(date.strftime("%d-%m-%Y"))
-    print(amount_by_date)
-    print(date_label)
 
-    ##INCOME VS CATEGORY
+    ## GRAPH INCOME VS CATEGORY
 
     category_comparison = (
         db.session.query(func.sum(Expenses.amount), Expenses.category)
@@ -340,6 +350,7 @@ def dashboard():
     )
 
 
+# WHEN YOU CLICK ON THE CATEGORY GRAPH THIS WILL BE CALLED
 @app.route("/category/<category>")
 def category(category):
     user_id = session.get("id")

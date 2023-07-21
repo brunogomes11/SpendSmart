@@ -4,7 +4,6 @@ from wtforms import (
     SubmitField,
     HiddenField,
     SelectField,
-    FloatField,
     HiddenField,
     EmailField,
     PasswordField,
@@ -53,7 +52,7 @@ category_types = [
     ("transport", "Transport"),
     ("fun", "Fun"),
     ("pet", "Pet"),
-    ("photoo", "Photo"),
+    ("photo", "Photo"),
     ("gift", "Gift"),
     ("miscellaneous", "Miscellaneous"),
 ]
