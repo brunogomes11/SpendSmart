@@ -2,6 +2,9 @@
 
 ## created by Bruno Gomes
 
+-   email: guest@guest.com
+-   password: 123456
+
 Application deployed :arrow_forward: [click here](https://spendsmart-2n0e.onrender.com/) :arrow_backward:
 
 <img src="img/banner.png" width="600" height="300">
@@ -117,6 +120,9 @@ if  expense:
     -   [Krona One](https://fonts.google.com/specimen/Krona+One?query=Krona+on)
 
 ## Unsolved Problems
+
+-   Make CSS responsive
+-   Implement access control
 
 ## Future Improviments
 
