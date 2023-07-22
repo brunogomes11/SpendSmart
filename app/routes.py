@@ -273,8 +273,10 @@ def dashboard():
 
     chart_data = []
     for amount, name in category_comparison:
+        display_name = name.replace("_", " ")
+
         category = {
-            "name": name,
+            "name": display_name,
             "expenses": {"category": amount, "link": f"/category/{name}"},
         }
         chart_data.append(category)
