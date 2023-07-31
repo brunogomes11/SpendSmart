@@ -365,7 +365,7 @@ body {
 .summary {
     padding: 10px;
     margin-right: 20px;
-    text-align: center;
+    text-align: lef;
     line-height: 40px;
 }
 
@@ -383,8 +383,6 @@ body {
 
 .date-form {
     text-align: center;
-    box-sizing: border-box;
-
     padding: 10px;
     margin: 10px;
     font-size: 10px;
@@ -414,7 +412,7 @@ body {
 .form-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
     margin: 5px 0;
 }
 
@@ -727,7 +725,15 @@ body {
     }
 
     .btn-login-banner {
-        left: 50%;
+        font-size: 40px;
+        padding: 8px 16px;
+        left: 50%; /* Move the button to the center of the screen */
+        transform: translateX(-50%);
+        bottom: 14%;
+    }
+
+    .add-btn {
+        font-size: 15px;
     }
 }
 

@@ -24,7 +24,7 @@ def signup():
 
     ## POST ##
 
-    # Valide the form call POST method
+    # Validate the form call POST method
     if form.validate_on_submit():
         form_password = request.form.get("password")  # Getting password from form
 
