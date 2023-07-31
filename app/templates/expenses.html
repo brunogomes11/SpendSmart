@@ -15,6 +15,7 @@
                 <span class="span-expenses">{{total_expense}}</span>
             </p>
             <p>
+
                 Net Balance (A$):
                 <span class="span-balance">{{net_balance}}</span>
             </p>
@@ -37,7 +38,7 @@
                     {% endfor %}
                 </ul>
                 {% endif %}
-
+                
                 <div class="form-row">
                     <label for="">{{ form.end_date.label}}</label>
                     {{ form.end_date(class="input_date") }}
@@ -74,12 +75,12 @@
         <tbody>
             {% for expense in expenses %}
             <tr>
-                <td>{{ expense.date }}</td>
-                <td>{{ expense.payee }}</td>
-                <td>{{ expense.category.replace("_", " ") }}</td>
-                <td>{{ expense.description }}</td>
-                <td>A${{ expense.amount }}</td>
-                <td>
+                <td data-label="Date">{{ expense.date }}</td>
+                <td data-label="Payee">{{ expense.payee }}</td>
+                <td data-label="Category">{{ expense.category.replace("_", " ") }}</td>
+                <td data-label="Description">{{ expense.description }}</td>
+                <td data-label="Amount">A${{ expense.amount }}</td>
+                <td data-label="Action">
                     <a
                         class="edit-delete-btn"
                         href="/edit_expense/{{expense.expense_id}}"

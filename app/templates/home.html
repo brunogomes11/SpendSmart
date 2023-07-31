@@ -1,14 +1,13 @@
 {% extends 'base.html' %} {% block main %}
 
 <div class="banner-area">
-    <!-- <img src="{{url_for('static', filename='banner.png')}}" alt="logo" /> -->
-    <!-- <button class="btn-login-banner">
+    <button class="btn-login-banner">
         {% if session.name %}
         <a href="/expenses">Expenses</a>
         {% else %}
         <a href="/login">Login</a>
         {% endif %}
-    </button> -->
+    </button>
 </div>
 
 {% endblock%}
