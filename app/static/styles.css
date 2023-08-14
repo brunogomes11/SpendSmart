@@ -169,7 +169,7 @@ body {
     left: 25%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
-    background-color: #5db7de;
+    background-color: #454545;
     color: #50a060;
     font-size: 60px;
     padding: 12px 24px;
@@ -185,6 +185,22 @@ body {
 
 .btn-login-banner a {
     text-decoration: none;
+}
+
+.btn-login-banner a:link {
+    color: #50a060;
+}
+
+.btn-login-banner a:visited {
+    color: #50a060;
+}
+
+.btn-login-banner a:hover {
+    color: #50a060;
+}
+
+.btn-login-banner a:active {
+    color: #50a060;
 }
 
 /* LOGIN */
@@ -729,7 +745,7 @@ body {
         padding: 8px 16px;
         left: 50%; /* Move the button to the center of the screen */
         transform: translateX(-50%);
-        bottom: 14%;
+        /* bottom: 14%; */
     }
 
     .add-btn {
